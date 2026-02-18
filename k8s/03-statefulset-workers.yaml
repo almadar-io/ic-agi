@@ -1,0 +1,73 @@
+# ── IC-AGI Worker Nodes (StatefulSet) ──
+# Workers execute IR segments. Each worker is an independent execution
+# node with its own identity — modeled as a StatefulSet so each gets
+# a stable hostname (worker-0, worker-1, worker-2).
+#
+# SECURITY RATIONALE:
+# - Each worker sees only its assigned IR segment.
+# - Workers validate capability tokens before execution.
+# - Stable identities allow per-node audit tracking.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ic-agi-worker
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: worker
+spec:
+  serviceName: ic-agi-worker-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ic-agi
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ic-agi
+        app.kubernetes.io/component: worker
+    spec:
+      containers:
+        - name: worker
+          image: gcr.io/car-dealer-ai-472618/ic-agi:v3
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: ic-agi-config
+            - secretRef:
+                name: ic-agi-signing-key
+          env:
+            - name: IC_AGI_NODE_ROLE
+              value: "worker"
+            - name: IC_AGI_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "96Mi"
+            limits:
+              cpu: "250m"
+              memory: "192Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false

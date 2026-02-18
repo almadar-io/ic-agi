@@ -1,0 +1,69 @@
+# ── IC-AGI Services ──
+
+# 1. Control Plane Service (ClusterIP — internal access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: ic-agi-control-plane
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: control-plane
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: control-plane
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+
+---
+
+# 2. Worker Headless Service (for StatefulSet DNS resolution)
+# Each worker is addressable as: ic-agi-worker-{0,1,2}.ic-agi-worker-headless.ic-agi.svc.cluster.local
+apiVersion: v1
+kind: Service
+metadata:
+  name: ic-agi-worker-headless
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: worker
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: worker
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+---
+
+# 3. API Gateway Service (LoadBalancer — external access for testing)
+# Exposes the Control Plane externally for API testing.
+# In production, this would be behind an Ingress with TLS + auth.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ic-agi-api
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: api-gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/component: control-plane
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP

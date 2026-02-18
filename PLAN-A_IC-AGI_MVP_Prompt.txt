@@ -1,0 +1,27 @@
+IC‑AGI MVP CODE BASE
+
+You are creating an MVP of a distributed secure execution system called
+IC‑AGI (Infrastructure Critical Anti‑AGI).
+
+Goals: 1) Accept an Intermediate Representation (IR) of a function. 2)
+Split state into distributed shares. 3) Issue capability tokens (TTL,
+scope, budget). 4) Require K-of-N threshold approval for critical
+actions. 5) Log all actions in append-only audit storage.
+
+Generate modules for: - IR definition - Share/unshare logic (mock) -
+Worker execution stub - ControlPlane (capability issuance) - Threshold
+authorization simulation - Append-only audit log - Scheduler for routing
+IR segments
+
+Language: Python
+
+Requirements: - Use clear interfaces - Include comments explaining
+security rationale - Separate ControlPlane and ExecutionPlane - Include
+a simple test script demonstrating: - A trivial IR function (add two
+numbers) - Distributed execution simulation - Capability validation -
+Threshold approval simulation
+
+Do NOT include production cryptography. Use stubs with comments where
+real MPC/threshold crypto would be implemented.
+
+Return only code modules and the test script.

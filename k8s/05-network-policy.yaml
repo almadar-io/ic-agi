@@ -1,0 +1,70 @@
+# ── IC-AGI Network Policy ──
+# SECURITY: Restrict network access within the ic-agi namespace.
+#
+# Rules:
+# - Workers can ONLY talk to the Control Plane (not to each other).
+# - Control Plane can talk to Workers.
+# - External ingress only reaches the Control Plane via the API service.
+# - No egress to the internet from workers.
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ic-agi-worker-isolation
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: worker
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Workers accept traffic only from the Control Plane
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: control-plane
+      ports:
+        - port: 8080
+          protocol: TCP
+  egress:
+    # Workers can only reach the Control Plane
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: control-plane
+      ports:
+        - port: 8080
+          protocol: TCP
+    # Allow DNS resolution
+    - to: []
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+
+---
+
+# Control Plane can receive from anywhere in namespace and external
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ic-agi-control-plane-policy
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: control-plane
+  policyTypes:
+    - Ingress
+  ingress:
+    # Accept from workers and external (via LoadBalancer)
+    - ports:
+        - port: 8080
+          protocol: TCP

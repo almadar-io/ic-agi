@@ -1,0 +1,15 @@
+# ── IC-AGI ConfigMap ──
+# Shared configuration for all IC-AGI nodes.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ic-agi-config
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+data:
+  IC_AGI_THRESHOLD_K: "2"
+  IC_AGI_THRESHOLD_N: "3"
+  IC_AGI_NUM_WORKERS: "3"
+  IC_AGI_DISTRIBUTED: "true"
+  PORT: "8080"

@@ -1,0 +1,11 @@
+# ── IC-AGI Namespace ──
+# Isolated namespace for the IC-AGI distributed execution system.
+# All IC-AGI resources live here, separate from other workloads.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+    app.kubernetes.io/part-of: plan-a
+    project: ic-agi

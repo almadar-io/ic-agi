@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+%SystemDrive%/
+
+# TLA+ model checker states
+ic_agi/formal/states/
+
+# X poster credentials (keep local only)
+x_poster/
+
+# Misc
+*.log
+*.zip
+*.bin
+*.jar
+*.pdf

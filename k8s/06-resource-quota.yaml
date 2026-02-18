@@ -1,0 +1,18 @@
+# ── IC-AGI Resource Quotas ──
+# SECURITY: Limit total resource consumption in the ic-agi namespace
+# to prevent resource exhaustion attacks.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: ic-agi-quota
+  namespace: ic-agi
+  labels:
+    app.kubernetes.io/name: ic-agi
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: "1Gi"
+    limits.cpu: "2"
+    limits.memory: "2Gi"
+    pods: "10"
+    services: "5"

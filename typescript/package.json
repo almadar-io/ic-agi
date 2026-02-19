@@ -1,0 +1,35 @@
+{
+  "name": "@ic-agi/typescript",
+  "version": "0.1.0",
+  "description": "TypeScript port of IC-AGI — cryptographic authority guarantees for AI agents",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.4.0"
+  },
+  "keywords": ["ic-agi", "ai-safety", "capability-tokens", "threshold-auth", "audit-log"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/almadar-io/ic-agi.git",
+    "directory": "typescript"
+  }
+}

@@ -44,6 +44,11 @@ export interface AuditEntry {
   entryHash: string;
 }
 
+/**
+ * Hash payload uses snake_case keys (`prev_hash`) intentionally to match the Python IC-AGI
+ * implementation. Do NOT rename to camelCase (`prevHash`) — doing so would change the SHA-256
+ * digest and break cross-language audit log verification.
+ */
 function computeEntryHash(entry: Omit<AuditEntry, 'entryHash'>): string {
   const content = stableStringify({
     data: entry.data,

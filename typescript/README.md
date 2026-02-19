@@ -106,6 +106,22 @@ Verified in the original IC-AGI formal model:
 - P3 DenialFinality: once denied, resolution immutable
 - P4 ResolutionImmutability: resolved ⇒ resolution never changes
 
+## Cross-Language Compatibility Notes
+
+### Constructor Parameter Order: ThresholdAuthorizer
+
+The parameter order for `ThresholdAuthorizer` differs intentionally between the Python and TypeScript implementations:
+
+| Implementation | Signature |
+|----------------|-----------|
+| Python | `ThresholdAuthorizer(approver_ids, threshold)` |
+| TypeScript | `ThresholdAuthorizer(k, approverIds)` |
+
+The TypeScript version places the threshold `k` first because it is the more constrained, policy-critical value — putting it first makes call sites read naturally ("require **2** of these approvers") and aligns with common TypeScript API conventions where the primary configuration value leads. This is an intentional ergonomic improvement and is **not** a bug.
+
+When cross-referencing between the Python and TypeScript implementations, note this reversal so argument order is not accidentally swapped.
+
 ## License
 
 MIT
+

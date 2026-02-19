@@ -47,6 +47,10 @@ export interface TokenParams {
  * Canonical signable payload.
  * - Mutable fields (uses, revoked) are intentionally excluded.
  * - Snake_case keys match Python IC-AGI for upstream PR compatibility.
+ * NOTE: Do NOT convert these to camelCase. The keys `token_id`, `issued_to`, `issued_at`,
+ * `expires_at` must remain in snake_case to produce an identical HMAC digest to the Python
+ * implementation (P9 cross-language forgery resistance). Changing them would silently break
+ * hash verification between Python and TypeScript runtimes.
  * - Scope is sorted for determinism.
  */
 function signablePayload(

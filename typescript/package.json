@@ -1,7 +1,7 @@
 {
   "name": "@ic-agi/typescript",
   "version": "0.1.0",
-  "description": "TypeScript port of IC-AGI — cryptographic authority guarantees for AI agents",
+  "description": "TypeScript port of IC-AGI \u2014 cryptographic authority guarantees for AI agents",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,7 +11,10 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
@@ -25,11 +28,35 @@
     "ts-jest": "^29.0.0",
     "typescript": "^5.4.0"
   },
-  "keywords": ["ic-agi", "ai-safety", "capability-tokens", "threshold-auth", "audit-log"],
+  "keywords": [
+    "ic-agi",
+    "ai-safety",
+    "capability-tokens",
+    "threshold-auth",
+    "audit-log"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/almadar-io/ic-agi.git",
     "directory": "typescript"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "testEnvironment": "node",
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    }
   }
 }

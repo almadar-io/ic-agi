@@ -1,3 +1,17 @@
+// TLA+ property coverage:
+//   No dedicated TLA+ spec — RateLimiter is an operational safety module.
+//   Supports P12 (CircuitBreakerSafety) from DistributedExecution.tla by providing
+//   a complementary DoS-protection layer that prevents entity-level resource exhaustion.
+//
+// Behavioral coverage:
+//   - Per-entity sliding window enforcement (allow/block at limit)
+//   - Cooldown period activation after limit exceeded
+//   - Scope isolation: independent counters per (entity, scope) pair
+//   - Entity isolation: one entity's limits don't affect another
+//   - Global counter (10x per-entity): system-wide protection against distributed abuse
+//   - Burst handling: concurrent entity requests without cross-contamination
+//   - Reset semantics: per-entity and global counter clearing
+
 import { RateLimiter } from '../src/rate-limiter.js';
 
 describe('RateLimiter', () => {

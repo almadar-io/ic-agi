@@ -123,5 +123,5 @@ When cross-referencing between the Python and TypeScript implementations, note t
 
 ## License
 
-MIT
+Apache 2.0 — matching [upstream IC-AGI](https://github.com/saezbaldo/ic-agi).
 

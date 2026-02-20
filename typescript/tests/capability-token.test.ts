@@ -1,3 +1,14 @@
+// TLA+ property coverage (CapabilityTokens.tla):
+//   P5 AntiReplay:         uses <= budget (invariant) — budget exhaustion test
+//   P6 TTLEnforcement:     expired tokens produce no log entries — expired token rejection test
+//   P7 RevocationFinality: revoked = true => uses frozen forever — revocation finality test
+//   P8 BudgetMonotonicity: uses never decreases — uses counter never exceeds budget test
+//   P9 ForgeryResistance:  invalid signature => uses never incremented — forged signature test
+//
+// Additional coverage:
+//   - Policy caps: TTL capped at 3600s, budget capped at 100
+//   - HMAC-SHA256 signature verification via timingSafeEqual (constant-time)
+
 import {
   issueToken,
   verifyToken,

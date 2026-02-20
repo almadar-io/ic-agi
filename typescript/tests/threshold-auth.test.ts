@@ -1,3 +1,13 @@
+// TLA+ property coverage (ThresholdAuth.tla):
+//   P1 ThresholdSafety:       executed => approvals >= K — approval threshold test
+//   P2 NoUnilateralAuthority: K >= 2 enforced in constructor — K < 2 rejection test
+//   P3 DenialFinality:        once denied, resolution immutable — early denial test
+//   P4 ResolutionImmutability: resolved => resolution never changes — post-resolution vote rejection test
+//
+// Additional coverage:
+//   - Double-vote prevention: same approver cannot vote twice on one request
+//   - Unregistered approver rejection: only registered approvers can vote
+
 import { ThresholdAuthorizer } from '../src/threshold-auth.js';
 
 const approvers = ['alice', 'bob', 'charlie'];

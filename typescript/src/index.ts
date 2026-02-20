@@ -25,3 +25,6 @@ export type { RateLimitConfig } from './rate-limiter.js';
 
 export { CircuitBreaker, CircuitState } from './circuit-breaker.js';
 export type { CircuitBreakerConfig } from './circuit-breaker.js';
+
+export { SegmentExecutionEngine } from './distributed-execution.js';
+export type { SegmentState, WorkerState, IntegrityState } from './distributed-execution.js';

@@ -1,3 +1,18 @@
+// TLA+ property coverage (DistributedExecution.tla):
+//   P12 CircuitBreakerSafety: circuit-broken workers receive no segments — OPEN state blocks requests
+//
+// State machine coverage:
+//   CLOSED → OPEN:      consecutive failure threshold triggers trip
+//   OPEN → HALF_OPEN:   recovery timeout allows probe request
+//   HALF_OPEN → CLOSED: consecutive successes meet success threshold
+//   HALF_OPEN → OPEN:   any failure during probe trips immediately
+//
+// Additional coverage:
+//   - Error rate guard: trips when rate >= threshold AND totalRequests >= 5
+//   - Error rate minimum sample: no trip when totalRequests < 5 (avoids noisy startup)
+//   - Entity isolation: independent circuits per worker (w1 OPEN does not affect w2)
+//   - Stats tracking: totalRequests, totalFailures, consecutiveFailures
+
 import { CircuitBreaker, CircuitState } from '../src/circuit-breaker.js';
 
 describe('CircuitBreaker', () => {

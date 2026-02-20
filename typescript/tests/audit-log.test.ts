@@ -1,3 +1,14 @@
+// TLA+ property coverage (AuditLog_TLC.tla):
+//   A1 AppendOnly:         log length never decreases — append & index test
+//   A2 HashChain:          every entry links to predecessor's hash — integrity verification test
+//   A3 Immutability:       existing entries never change — tamper detection test
+//   A4 Completeness:       every action generates a log entry — implicit in all append tests
+//   A5 GrowthMonotonicity: log length monotonically non-decreasing — append ordering test
+//
+// Additional coverage:
+//   - Timestamp immutability: caller-supplied timestamps are rejected (server-authoritative time)
+//   - Filter correctness: event-type filtering returns correct subsets
+
 import { AuditLog } from '../src/audit-log.js';
 
 describe('AuditLog', () => {
